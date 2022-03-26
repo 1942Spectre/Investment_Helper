@@ -14,13 +14,15 @@ pip install requirements.txt
 
 ### 3- Enter your API key in the daily_procedure.py file
 
-### 4- Run the daily procedure
+### 4- Enter your assets with their corresponding symbols to the assets.xlsx file.
+
+## To Run the daily procedure:
 
 You can run the daily procedure by command line, or if you are in windows, you can simply execute the daily_procedure.bat file.
 
 You can also create a shortcut of the daily_procedure.bat file and paste it to the startup folder of windows so it will run everytime windows starts.
 
-### 5- Plot your assets
+## To Plot your assets:
 
 You can run the plot_assets file from the command line or you can simply execute the plot_assets.bat file if you are in windows.
 
