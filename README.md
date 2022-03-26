@@ -23,3 +23,9 @@ You can also create a shortcut of the daily_procedure.bat file and paste it to t
 ### 5- Plot your assets
 
 You can run the plot_assets file from the command line or you can simply execute the plot_assets.bat file if you are in windows.
+
+## Further Development
+
+Sınce I only have the basic api plan, I could not improve the daily procedure file. Normally, my plan was to create a procedure that runs on startup and records the every day passed since the last time procedure was run. Sınce I don't have a better api key, I could not test that but if you are interested in this functionality and need my help, feel free to contact me.
+
+afsin1942@icloud.com
