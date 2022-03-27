@@ -6,9 +6,7 @@ import json
 from os import path
 import datetime
 
-##################################################
-API_KEY = "YOU NEED TO DEFINE YOUR API KEY HERE"
-##################################################
+API_KEY = "b0f56481-dab4-45d7-9b54-58c80760b188"
 
 
 def get_converted_value(symbol, convert):
@@ -33,7 +31,6 @@ def get_converted_value(symbol, convert):
         print(e)
 
 
-# USD 
 def get_dollar_assets(assets):
     asset_dict = dict()
     usd_dict = dict()
@@ -52,34 +49,23 @@ def get_dollar_assets(assets):
     return usd_dict
 
 
-# The currency in Turkey is TRY, Turkish Liras.
 def get_try_assets(assets):
     asset_dict = dict()
     try_dict = dict()
     for row_num in range(assets.shape[0]):
         row = assets.iloc[row_num]
         asset_dict[row["Currency"]] = row["Amount"]
-
     for currency in asset_dict.keys():
-
         if currency != "GAU":
             price = float(get_converted_value(currency, "TRY")
                           ["data"][0]["quote"]["TRY"]["price"])
             try_dict[currency] = asset_dict[currency] * price
-        # Since we use GAU instead of XAU in my country
-        # Gold in grams instead of ounces, and the API does not support GAU,
-        # There is a conversion
         if currency == "GAU":
             price = float(get_converted_value("XAU", "TRY")[
                           "data"][1]["quote"]["TRY"]["price"]) * 0.035274
             try_dict[currency] = asset_dict[currency] * price
     return try_dict
 
-
-# This function creates a daily table if its not already there,
-# The excel table which is the output of that function contains the information
-# of all the currencies in the assets table, how much they were worth in different
-# currencies
 
 def create_daily_table(usd_assets, try_assets):
     daily_table = pd.DataFrame(assets)
@@ -91,18 +77,15 @@ def create_daily_table(usd_assets, try_assets):
     month = now.month
     day = now.day
 
-    file_name = f"asset_outputs/assets-{day}-{month}-{year}.xlsx"
+    file_name = f"asset_outputs/{day}-{month}-{year}.xlsx"
 
     if path.exists(file_name):
         print("Create daily table procedure already ran today.")
     else:
-        daily_table.to_excel(
-            f"asset_outputs/assets-{day}-{month}-{year}.xlsx", index=False)
+        daily_table.to_excel(f"asset_outputs/{day}-{month}-{year}.xlsx",index=False)
     return()
 
 
-# This function adds a row at the bottom of the history.xlsx file,
-# recording the wealth information on that particular date.
 def update_total_assets_table(total_usd_assets, total_try_assets):
     total_assets_table = pd.read_excel("history.xlsx",)
     total_assets_table["DATE"] = pd.to_datetime(total_assets_table["DATE"])
@@ -124,14 +107,12 @@ def update_total_assets_table(total_usd_assets, total_try_assets):
         df1["TRY"] = [total_try_assets]
         df1["USD"] = [total_usd_assets]
         total_assets_table = total_assets_table.append(df1, ignore_index=True)
-        total_assets_table.to_excel("history.xlsx", index=False)
+        total_assets_table.to_excel("history.xlsx",index=False)
         print(total_assets_table)
     else:
         print("Procedure has already run today.")
 
-############################################################################
-############################## MAIN BLOCK ##################################
-############################################################################
+
 assets = pd.read_excel("assets.xlsx")
 usd_assets = get_dollar_assets(assets)
 total_usd_assets = sum(usd_assets.values())
